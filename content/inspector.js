@@ -94,12 +94,18 @@
     if (tooltipEl && document.documentElement.contains(tooltipEl)) return tooltipEl;
     tooltipEl = document.createElement('div');
     tooltipEl.id = TOOLTIP_ID;
+    tooltipEl.style.setProperty('display', 'none', 'important'); // hidden until placed
     (document.body || document.documentElement).appendChild(tooltipEl);
     return tooltipEl;
   }
 
+  // The stylesheet resets the tooltip with `all: initial !important`, which
+  // also pins `display`/`top`/`left` to their initial values with !important.
+  // A plain inline style can't override a stylesheet !important — only an
+  // inline !important can — so every dynamic property is set via setProperty
+  // with the 'important' priority.
   function hideTooltip() {
-    if (tooltipEl) tooltipEl.style.display = 'none';
+    if (tooltipEl) tooltipEl.style.setProperty('display', 'none', 'important');
   }
 
   function escapeHtml(str) {
@@ -137,7 +143,7 @@
       + `<span class="cs-row">Origin: <b class="cs-${partyClass}">${party}</b></span>`
       + scoreHtml;
 
-    tip.style.display = 'block';
+    tip.style.setProperty('display', 'block', 'important');
 
     // Position above the element, clamped to the viewport; flip below if there
     // isn't room above.
@@ -150,8 +156,8 @@
       left = window.innerWidth - tipRect.width - 4;
     }
     if (left < 4) left = 4;
-    tip.style.top  = `${Math.max(4, top)}px`;
-    tip.style.left = `${left}px`;
+    tip.style.setProperty('top',  `${Math.max(4, top)}px`, 'important');
+    tip.style.setProperty('left', `${left}px`, 'important');
   }
 
   // --- Hover handlers -------------------------------------------------------
@@ -218,7 +224,6 @@
         all: initial !important;
         position: fixed !important;
         z-index: 2147483647 !important;
-        display: none;
         max-width: 320px !important;
         padding: 7px 10px !important;
         background: #0d1628 !important;
@@ -264,10 +269,12 @@
       injectStyle();
       document.addEventListener('mouseover', onMouseOver, true);
       document.addEventListener('mouseout', onMouseOut, true);
+      console.info('[CookieSpy] Hover Inspector enabled — hover images, iframes, etc.');
     } else {
       document.removeEventListener('mouseover', onMouseOver, true);
       document.removeEventListener('mouseout', onMouseOut, true);
       cleanup();
+      console.info('[CookieSpy] Hover Inspector disabled.');
     }
   }
 
