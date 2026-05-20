@@ -147,12 +147,6 @@ Detects top-level page navigations so the extension can reset a tab's tracking
 data when the user moves to a new page.
 ```
 
-**`tabs`**
-```
-Identifies the active tab so the popup can display data for the page the user
-is currently viewing.
-```
-
 **`alarms`**
 ```
 Schedules the automatic expiry of temporary "allow" exceptions, so a released

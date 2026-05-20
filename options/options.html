@@ -20,17 +20,23 @@
 
     <!-- ─── URLhaus Auth-Key ─────────────────────────────────────────────── -->
     <section class="setting">
-      <h2 class="setting-title">URLhaus threat intelligence</h2>
+      <h2 class="setting-title">URLhaus threat intelligence (optional)</h2>
       <p class="setting-desc">
         URLhaus (by abuse.ch) is CookieSpy's strongest malware-domain signal.
-        As of 2024 it requires a free Auth-Key. Without one, scoring still
-        runs on the keyless DNS checks alone — but it catches far less.
+        As of 2024 it requires a free Auth-Key. Without one, CookieSpy still
+        works fully and keeps scoring domains with the keyless DNS checks —
+        URLhaus simply adds deeper malware coverage on top.
       </p>
       <p class="setting-desc">
-        Get a key in about two minutes: sign in at
+        The key is free and personal to you: sign in at
         <a href="https://auth.abuse.ch/" target="_blank" rel="noopener">auth.abuse.ch</a>
-        with Google/GitHub/X/LinkedIn, then create an Auth-Key under the
-        "Optional" section and paste it below.
+        with a Google/GitHub/X/LinkedIn account, create an Auth-Key under the
+        "Optional" section, and paste it below — about two minutes.
+      </p>
+      <p class="setting-desc">
+        CookieSpy ships with no shared key — each user brings their own. That
+        keeps you a normal, individual user under abuse.ch's fair-use terms.
+        Your key is stored only on this device and is sent only to abuse.ch.
       </p>
 
       <label class="field-label" for="auth-key">abuse.ch Auth-Key</label>

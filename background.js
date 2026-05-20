@@ -851,7 +851,21 @@ chrome.webRequest.onErrorOccurred.addListener(
 
 // --- Message handler - serves data to popup ---------------------------------
 
-chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  // Defence in depth: only ever act on messages from this extension's own
+  // contexts. The manifest declares no externally_connectable, so web pages
+  // and other extensions cannot reach this listener anyway - this makes that
+  // guarantee explicit and fails safe if the manifest ever changes.
+  if (sender.id !== chrome.runtime.id) return false;
+
+  // Block/allow mutations may only come from the extension's own UI (the
+  // popup). A message from a content script carries a `sender.tab`; reject
+  // those for the privileged actions so on-page code can never alter rules.
+  if ((message.type === 'requestAllow' || message.type === 'revokeAllow')
+      && sender.tab) {
+    return false;
+  }
+
   // -- Allow-rule actions from the popup ----------------------------------
   // These are fire-and-forget from the popup's perspective: it'll re-render
   // off the dataChanged broadcast that notifyAllTabsForDomain triggers.
