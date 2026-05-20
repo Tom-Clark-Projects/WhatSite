@@ -3,7 +3,8 @@
   "name": "CookieSpy",
   "short_name": "CookieSpy",
   "version": "1.0.0",
-  "description": "Live per-tab tracker for first & third-party cookies and external network connections with IP geolocation. No data stored.",
+  "description": "Per-tab visibility into cookies, third-party connections, IP geolocation and live threat scores, with optional auto-blocking.",
+  "homepage_url": "https://cloudsecurity.global",
   "permissions": [
     "cookies",
     "webRequest",
