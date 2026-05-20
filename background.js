@@ -560,18 +560,35 @@ async function lookupThreat(domain, tabId) {
 
 /** Merge a fresh threat-info object into the per-tab domain entry. */
 function applyThreat(domain, tabId, info) {
+  // The auto-block decision is global, so apply it first - independent of
+  // whether this domain is currently tracked in any open tab.
+  enforceBlockPolicy(domain, info);
+
   const data = tabData.get(tabId);
   if (!data) return;
   const entry = data.domains.get(domain);
   if (!entry) return;
   entry.threat = info;
   notifyPopup(tabId);
+}
 
-  // Auto-block if the score crosses the configured threshold. The block is
-  // global (any page loading this domain as a 3rd-party resource is affected);
-  // the user can release it on a per-site, time-limited basis from the popup.
+/**
+ * Apply the auto-block policy for a domain given its latest threat verdict:
+ *
+ *   score > threshold    -> block
+ *   score <= threshold   -> UNBLOCK (this is what clears a stale rule, e.g. a
+ *                           domain blocked earlier under a since-corrected
+ *                           score - the original code only ever added blocks)
+ *   level === 'unknown'  -> leave as-is, so a transient lookup failure can't
+ *                           unblock a genuine threat
+ *
+ * blockDomain / unblockDomain are both idempotent, so repeated calls are safe.
+ */
+function enforceBlockPolicy(domain, info) {
   if (info.score > BLOCK_SCORE_THRESHOLD) {
     blockDomain(domain);
+  } else if (info.level !== 'unknown') {
+    unblockDomain(domain);
   }
 }
 
@@ -785,6 +802,16 @@ async function reconstructState() {
     }
     for (const allow of activeAllows.values()) {
       if (allow.mode === 'unknown') allow.mode = 'tab-close';
+    }
+
+    // Re-score every currently-blocked domain. Blocked requests never reach
+    // webRequest.onCompleted, so a blocked domain can't be re-scored through
+    // normal traffic - it would stay blocked forever. Re-checking here lets
+    // enforceBlockPolicy() lift any block that no longer qualifies (e.g. a
+    // domain blocked earlier under a since-corrected score). tabId is null:
+    // applyThreat() skips the per-tab UI step but block policy still runs.
+    for (const domain of [...blockedDomains.keys()]) {
+      lookupThreat(domain, null);
     }
   } catch (e) {
     console.error('CookieSpy: reconstructState failed', e);
