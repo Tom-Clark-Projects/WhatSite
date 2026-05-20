@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CookieSpy — Privacy Policy</title>
+  <meta name="robots" content="index,follow" />
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f5f7fa;
+      color: #1e293b;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.65;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    h2 { font-size: 19px; margin: 36px 0 10px; padding-top: 8px; border-top: 1px solid #e2e8f0; }
+    h2:first-of-type { border-top: none; }
+    p, li { font-size: 15px; }
+    ul { padding-left: 22px; }
+    li { margin: 4px 0; }
+    a { color: #0ea5e9; }
+    code {
+      background: #e2e8f0;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', Consolas, monospace;
+      font-size: 13px;
+    }
+    .meta { color: #64748b; font-size: 14px; margin: 0 0 24px; }
+    .lead {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 15px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    th { background: #f1f5f9; }
+    footer { margin-top: 48px; color: #64748b; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <main>
+
+    <h1>CookieSpy — Privacy Policy</h1>
+    <p class="meta">
+      Effective date: 20 May 2026 ·
+      Extension: CookieSpy — Cookie &amp; Connection Tracker ·
+      Developer: Tom Clark, <a href="https://cloudsecurity.global">cloudsecurity.global</a>
+    </p>
+
+    <p class="lead">
+      CookieSpy is built privacy-first. In plain terms: the developer operates
+      no server, runs no analytics, and receives none of your data.
+    </p>
+
+    <h2>Summary</h2>
+    <ul>
+      <li>CookieSpy does <strong>not</strong> collect, store, or transmit your personal information.</li>
+      <li>It does <strong>not</strong> track your browsing history, build a profile, or show ads.</li>
+      <li>All page analysis happens <strong>locally, in memory</strong>, and is cleared when you leave the page or close the tab.</li>
+      <li>The only data that leaves your browser are <strong>individual domain names</strong>, sent to third-party reputation and geolocation APIs so the extension can show you IP and threat information. These requests are not linked to your identity.</li>
+      <li>The developer has <strong>no back-end</strong> and never sees any of your data.</li>
+    </ul>
+
+    <h2>What the extension accesses</h2>
+    <p>To do its job, CookieSpy reads the following <strong>on your device only</strong>:</p>
+    <ul>
+      <li><strong>Cookies</strong> for the pages you visit — to count them and classify them as first-party or third-party.</li>
+      <li><strong>Network requests</strong> made by the pages you visit (observed, via the browser's <code>webRequest</code> API) — to list the external domains each page connects to.</li>
+      <li><strong>Navigation events</strong> — to know which page's data to show and to reset that data when you navigate away.</li>
+    </ul>
+    <p>
+      This information is held in memory, per tab, and is discarded when you
+      navigate away or close the tab. It is never written to disk and never
+      sent to the developer.
+    </p>
+
+    <h2>What data leaves your browser</h2>
+    <p>
+      To enrich each external domain with geolocation and threat information,
+      CookieSpy sends <strong>the domain name alone</strong> (for example,
+      <code>cdn.example.com</code>) to the following third-party services over
+      HTTPS:
+    </p>
+    <table>
+      <tr><th>Service</th><th>Purpose</th><th>Provider privacy policy</th></tr>
+      <tr><td><code>ipwho.is</code></td><td>IP address &amp; geolocation of the domain</td><td><a href="https://ipwho.is/">ipwho.is</a></td></tr>
+      <tr><td><code>urlhaus-api.abuse.ch</code></td><td>Malware-reputation lookup (only if you configure an Auth-Key)</td><td><a href="https://abuse.ch/">abuse.ch</a></td></tr>
+      <tr><td><code>security.cloudflare-dns.com</code></td><td>DNS-over-HTTPS, malware-filtering resolver</td><td><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a></td></tr>
+      <tr><td><code>dns.google</code></td><td>DNS-over-HTTPS, plain resolver (used for comparison)</td><td><a href="https://policies.google.com/privacy">Google</a></td></tr>
+    </table>
+    <p>Important limits on what is sent:</p>
+    <ul>
+      <li>Only <strong>bare domain names</strong> are sent — never full URLs, never page content, never form data, never cookies, and never anything that identifies you.</li>
+      <li>Requests are functional API lookups. The developer does not receive copies of them and operates no intermediary server.</li>
+      <li>Each unique domain is queried at most once per browsing session and the result is cached in memory only.</li>
+    </ul>
+    <p>
+      If you choose to configure an abuse.ch Auth-Key (an optional, free key you
+      obtain yourself), that key is sent to <code>urlhaus-api.abuse.ch</code> to
+      authenticate those lookups, exactly as abuse.ch requires.
+    </p>
+
+    <h2>What is stored on your device</h2>
+    <p>
+      CookieSpy persists only two small, non-personal items, both in local
+      browser storage on your device — never on a remote server:
+    </p>
+    <ul>
+      <li>Your optional abuse.ch Auth-Key, if you enter one on the Settings page. You can clear it at any time.</li>
+      <li>The Hover Inspector on/off preference.</li>
+    </ul>
+    <p>
+      In addition, when CookieSpy auto-blocks a high-risk domain or you grant a
+      temporary "allow" exception, the browser stores the corresponding rule
+      (a domain name and, for timed allows, an expiry timestamp) in its own
+      <code>declarativeNetRequest</code> and <code>alarms</code> stores. These
+      contain no browsing history and are removed automatically when the rule
+      is lifted.
+    </p>
+    <p>No browsing history, no analytics, and no personal data are ever stored.</p>
+
+    <h2>What CookieSpy never does</h2>
+    <ul>
+      <li>It never collects names, email addresses, or other personal identifiers.</li>
+      <li>It never collects authentication credentials, financial or health data, or personal communications.</li>
+      <li>It never records or transmits the list of pages you visit.</li>
+      <li>It never sells or shares data with advertisers or data brokers.</li>
+      <li>It never executes remote code — it loads only the JavaScript shipped inside the extension package.</li>
+    </ul>
+
+    <h2>Permissions</h2>
+    <p>
+      CookieSpy requests broad host access (<code>&lt;all_urls&gt;</code>)
+      because it is designed to work on every site you visit — there is no way
+      to know in advance which sites you will want analysed. Each permission is
+      used solely for the features described above and for no other purpose.
+    </p>
+
+    <h2>Children's privacy</h2>
+    <p>
+      CookieSpy is a general-purpose security utility, is not directed at
+      children, and does not knowingly collect any information from anyone.
+    </p>
+
+    <h2>Changes to this policy</h2>
+    <p>
+      If this policy changes, the updated version will be published at this URL
+      with a new effective date. Material changes will also be reflected in the
+      extension's store listing.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      Questions about this policy or CookieSpy's privacy practices can be
+      directed to the developer via
+      <a href="https://cloudsecurity.global">cloudsecurity.global</a>.
+    </p>
+
+    <footer>CookieSpy · Cookie &amp; Connection Tracker</footer>
+
+  </main>
+</body>
+</html>
