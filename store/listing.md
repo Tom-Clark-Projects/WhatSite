@@ -1,4 +1,4 @@
-# CookieSpy — Store Submission Pack
+# WhatSite — Store Submission Pack
 
 Everything needed to fill in the Chrome Web Store and Microsoft Edge Add-ons
 submission forms. Copy/paste from here. Items marked **[ACTION]** need a
@@ -10,15 +10,15 @@ decision or input from you.
 
 | Field | Value |
 |-------|-------|
-| Extension name | CookieSpy |
+| Extension name | WhatSite |
 | Version | 1.0.0 |
 | Category | **Chrome:** "Privacy & Security" · **Edge:** "Productivity" (Edge has no privacy category) |
 | Language | English |
-| Privacy policy URL | **[ACTION]** Publish `store/PRIVACY.md` on cloudsecurity.global and paste the URL, e.g. `https://cloudsecurity.global/cookiespy/privacy` |
+| Privacy policy URL | **[ACTION]** Publish `store/PRIVACY.md` on cloudsecurity.global and paste the URL, e.g. `https://cloudsecurity.global/whatsite-privacy` |
 
-> **[ACTION] — Check the name is free.** Search "CookieSpy" in both stores
+> **[ACTION] — Check the name is free.** Search "WhatSite" in both stores
 > before submitting. If another live extension already uses it, you'll need a
-> variant (e.g. "CookieSpy — Connection Tracker"). Update `name` in
+> variant (e.g. "WhatSite — Connection Tracker"). Update `name` in
 > `manifest.json` to match whatever you submit.
 
 ---
@@ -39,7 +39,7 @@ Per-tab visibility into cookies, third-party connections, IP geolocation and liv
 Paste into the store's "Detailed description" field:
 
 ```
-CookieSpy shows you exactly what every web page is doing behind the scenes —
+WhatSite shows you exactly what every web page is doing behind the scenes —
 which cookies it sets, which external companies it talks to, and whether any
 of those connections are risky.
 
@@ -90,11 +90,11 @@ PRIVACY BY DESIGN
 NOTE ON THREAT INTELLIGENCE
 
 The strongest threat source, URLhaus, now requires a free Auth-Key from
-abuse.ch. CookieSpy works without one (using the DNS-based checks), but for
+abuse.ch. WhatSite works without one (using the DNS-based checks), but for
 full coverage you can add a free key on the extension's Settings page — it
 takes about two minutes.
 
-CookieSpy is open source.
+WhatSite is open source.
 ```
 
 > **[ACTION]** If you want the source repo linked in the description, add the
@@ -108,7 +108,7 @@ Chrome requires a single, narrow purpose. Paste this into the "single purpose"
 field:
 
 ```
-CookieSpy gives users visibility into, and control over, the cookies and
+WhatSite gives users visibility into, and control over, the cookies and
 third-party network connections of the web pages they visit. It displays
 first/third-party cookie counts, external connections with IP geolocation and
 threat scores, and can block domains flagged as malicious. Every feature
@@ -161,7 +161,7 @@ abuse.ch Auth-Key and the Hover Inspector on/off setting.
 
 **Host permission `<all_urls>`**
 ```
-CookieSpy analyses cookies and connections on whatever site the user chooses
+WhatSite analyses cookies and connections on whatever site the user chooses
 to visit, and applies block/allow rules across all sites. Because it cannot
 know in advance which sites the user will want analysed, it requires access to
 all URLs. It does not single out specific websites.

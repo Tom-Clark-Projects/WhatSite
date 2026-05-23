@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "CookieSpy",
-  "short_name": "CookieSpy",
+  "name": "WhatSite",
+  "short_name": "WhatSite",
   "version": "1.0.0",
   "description": "Per-tab visibility into cookies, third-party connections, IP geolocation and live threat scores, with optional auto-blocking.",
   "homepage_url": "https://cloudsecurity.global",
@@ -26,7 +26,7 @@
   ],
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "CookieSpy — Cookie & Connection Tracker",
+    "default_title": "WhatSite — Cookie & Connection Tracker",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",

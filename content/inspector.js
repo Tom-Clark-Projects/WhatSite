@@ -1,12 +1,12 @@
 /**
- * CookieSpy — Hover Inspector (content script)
+ * WhatSite — Hover Inspector (content script)
  *
  * When enabled (toggle in the popup), moving the mouse over a resource element
  * outlines it and shows a tooltip with:
  *   - the domain that served it
  *   - the request type (image, iframe, media, ...)
  *   - first-party vs third-party (relative to the page's own root domain)
- *   - the CookieSpy threat score, fetched from the background's cache
+ *   - the WhatSite threat score, fetched from the background's cache
  *
  * Two design choices make this work on real-world sites:
  *
@@ -30,10 +30,10 @@
 (() => {
   'use strict';
 
-  if (window.__cookieSpyInspectorLoaded) return;
-  window.__cookieSpyInspectorLoaded = true;
+  if (window.__whatSiteInspectorLoaded) return;
+  window.__whatSiteInspectorLoaded = true;
 
-  const TOOLTIP_ID = '__cookiespy-inspector-tooltip';
+  const TOOLTIP_ID = '__whatsite-inspector-tooltip';
 
   let enabled       = false;
   let tooltipEl     = null;
@@ -322,13 +322,13 @@
       document.addEventListener('mousemove', onMouseMove, true);
       document.addEventListener('scroll', onScroll, true);
       document.documentElement.addEventListener('mouseleave', onMouseLeave);
-      console.info('[CookieSpy] Hover Inspector enabled — hover images, iframes, videos.');
+      console.info('[WhatSite] Hover Inspector enabled — hover images, iframes, videos.');
     } else {
       document.removeEventListener('mousemove', onMouseMove, true);
       document.removeEventListener('scroll', onScroll, true);
       document.documentElement.removeEventListener('mouseleave', onMouseLeave);
       clearCurrent();
-      console.info('[CookieSpy] Hover Inspector disabled.');
+      console.info('[WhatSite] Hover Inspector disabled.');
     }
   }
 

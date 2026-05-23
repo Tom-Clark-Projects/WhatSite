@@ -1,4 +1,4 @@
-# CookieSpy 🕵️
+# WhatSite 🕵️
 
 > A browser extension for Chrome and Edge that gives you real-time, per-tab visibility into first-party cookies, third-party cookies, and external network connections — with IP geolocation.
 
@@ -11,7 +11,7 @@
 
 ## What it does
 
-When you visit a page, CookieSpy immediately shows you:
+When you visit a page, WhatSite immediately shows you:
 
 - **First-party cookies** — cookies set by the site you're visiting
 - **Third-party cookies** — cookies from domains other than the current site
@@ -49,9 +49,9 @@ Each domain is queried at most once per service-worker lifetime — results are 
 
 ### URLhaus needs a free Auth-Key
 
-As of 2024, abuse.ch requires a free **Auth-Key** to query the URLhaus API. CookieSpy ships without one, so out of the box only the keyless Cloudflare-vs-Google DNS check is active — which catches far fewer threats. To enable the stronger URLhaus signal:
+As of 2024, abuse.ch requires a free **Auth-Key** to query the URLhaus API. WhatSite ships without one, so out of the box only the keyless Cloudflare-vs-Google DNS check is active — which catches far fewer threats. To enable the stronger URLhaus signal:
 
-1. Open CookieSpy's **Settings** (right-click the toolbar icon → *Options*, or click the in-popup hint).
+1. Open WhatSite's **Settings** (right-click the toolbar icon → *Options*, or click the in-popup hint).
 2. Follow the link to [auth.abuse.ch](https://auth.abuse.ch/), sign in with Google/GitHub/X/LinkedIn, and create an Auth-Key under the "Optional" section.
 3. Paste the key into Settings, click **Save**, then **Test threat scoring** to confirm it's accepted.
 
@@ -59,13 +59,13 @@ The key is stored in `chrome.storage.local` (see *Privacy by design*). Until one
 
 ### Verifying it works
 
-Scores are mostly `0` on normal browsing — legitimate CDNs and analytics domains genuinely *are* clean, so that's expected. To exercise the full pipeline on demand, visit [`testsafebrowsing.appspot.com`](https://testsafebrowsing.appspot.com/): CookieSpy treats that host as a built-in self-test entry and forces it to score 100, so it appears blocked with the complete timed-allow UI.
+Scores are mostly `0` on normal browsing — legitimate CDNs and analytics domains genuinely *are* clean, so that's expected. To exercise the full pipeline on demand, visit [`testsafebrowsing.appspot.com`](https://testsafebrowsing.appspot.com/): WhatSite treats that host as a built-in self-test entry and forces it to score 100, so it appears blocked with the complete timed-allow UI.
 
 ---
 
 ## Auto-blocking & timed release
 
-When a domain scores **above 55** — in practice, when URLhaus has a *currently online* malware URL for it (with or without a corroborating Cloudflare DNS signal) — CookieSpy automatically blocks it using a Manifest V3 `declarativeNetRequest` dynamic rule. Historical-only listings (+15) and a lone Cloudflare DNS signal (+40) stay below the threshold and are flagged but not blocked. The block is global: any page loading that domain as a third-party resource is protected.
+When a domain scores **above 55** — in practice, when URLhaus has a *currently online* malware URL for it (with or without a corroborating Cloudflare DNS signal) — WhatSite automatically blocks it using a Manifest V3 `declarativeNetRequest` dynamic rule. Historical-only listings (+15) and a lone Cloudflare DNS signal (+40) stay below the threshold and are flagged but not blocked. The block is global: any page loading that domain as a third-party resource is protected.
 
 Blocked domains still appear in the popup's External Connections list, marked with a red accent bar and a 🚫 status button. Because the block happens at the network layer, the request-count pill stops climbing — instead the status button shows how many requests have been *blocked* since the page loaded.
 
@@ -87,7 +87,7 @@ No other major content blocker offers timed, auto-reverting exceptions — they 
 
 ## Hover inspector
 
-Flip the **🔍 Hover Inspector** toggle at the bottom of the popup and CookieSpy injects a lightweight on-page overlay. Hovering any *resource element* outlines it and shows a tooltip with:
+Flip the **🔍 Hover Inspector** toggle at the bottom of the popup and WhatSite injects a lightweight on-page overlay. Hovering any *resource element* outlines it and shows a tooltip with:
 
 - the **domain** that served it
 - the **request type** — `script`, `image`, `iframe`, `media`, `stylesheet`, `object`, etc.
@@ -96,7 +96,7 @@ Flip the **🔍 Hover Inspector** toggle at the bottom of the popup and CookieSp
 
 The outline is colour-coded: blue for first-party, amber for third-party, red if the domain is high-risk.
 
-Scope is deliberately limited to genuine resource elements — `<img>`, `<script>`, `<iframe>`, `<video>`, `<audio>`, `<source>`, `<link>`, `<embed>`, `<object>` — because their source URL is right there in the DOM, so the attribution is honest. CookieSpy does **not** try to tell you which domain "served" an arbitrary `<button>` or `<div>`: once a script has run, that lineage isn't reliably recoverable from the DOM, and guessing would only produce confident-looking fiction.
+Scope is deliberately limited to genuine resource elements — `<img>`, `<script>`, `<iframe>`, `<video>`, `<audio>`, `<source>`, `<link>`, `<embed>`, `<object>` — because their source URL is right there in the DOM, so the attribution is honest. WhatSite does **not** try to tell you which domain "served" an arbitrary `<button>` or `<div>`: once a script has run, that lineage isn't reliably recoverable from the DOM, and guessing would only produce confident-looking fiction.
 
 The toggle state is stored in `chrome.storage.local`; the content script is injected on every page but stays completely inert until you switch it on. Pages already open when you flip the toggle pick it up immediately; pages open from *before* the extension was installed or reloaded need a refresh first.
 
@@ -107,9 +107,9 @@ The toggle state is stored in `chrome.storage.local`; the content script is inje
 - **No browsing data on disk** — all tracking data (cookies, connections, scores) is held in memory and cleared when you navigate away or close the tab; no browsing history is ever written to `localStorage` or `chrome.storage`
 - **Two persisted exceptions, neither is browsing history:**
   - Auto-block and timed-allow rules persist via Chrome's own `declarativeNetRequest` and `chrome.alarms` stores so they survive a service-worker restart. They hold only domain names and expiry timestamps, and Chrome clears them when the rules are removed.
-  - Your abuse.ch Auth-Key, if you set one, is saved in `chrome.storage.local`. It is user-supplied configuration — a credential you chose to add — not data CookieSpy collected about you.
+  - Your abuse.ch Auth-Key, if you set one, is saved in `chrome.storage.local`. It is user-supplied configuration — a credential you chose to add — not data WhatSite collected about you.
 - **Per-tab isolation** — each tab has independent tracking state that never bleeds across tabs
-- **Limited external lookups** — for each *unique* external domain a tab contacts, CookieSpy makes up to four enrichment calls, all over HTTPS:
+- **Limited external lookups** — for each *unique* external domain a tab contacts, WhatSite makes up to four enrichment calls, all over HTTPS:
   - `ipwho.is` — IP geolocation (keyless)
   - `urlhaus-api.abuse.ch` — malware reputation (only if you've configured an Auth-Key)
   - `security.cloudflare-dns.com` — DNS-over-HTTPS (malware-filtering resolver, keyless)
@@ -137,20 +137,20 @@ The toggle state is stored in `chrome.storage.local`; the content script is inje
 
 ## Installation (Developer Mode)
 
-CookieSpy is a sideloaded developer extension — no Chrome Web Store required.
+WhatSite is a sideloaded developer extension — no Chrome Web Store required.
 
 ### Chrome
 1. Open `chrome://extensions`
 2. Enable **Developer mode** (top-right toggle)
 3. Click **"Load unpacked"**
-4. Select the `cookiespy-extension` folder
+4. Select the `WhatSite` folder
 5. Pin it from the Extensions menu
 
 ### Microsoft Edge
 1. Open `edge://extensions`
 2. Enable **Developer mode** (left sidebar)
 3. Click **"Load unpacked"**
-4. Select the `cookiespy-extension` folder
+4. Select the `WhatSite` folder
 5. Pin it to the toolbar
 
 ---
@@ -158,7 +158,7 @@ CookieSpy is a sideloaded developer extension — no Chrome Web Store required.
 ## Project structure
 
 ```
-cookiespy-extension/
+WhatSite/
 ├── manifest.json          # MV3 extension manifest
 ├── background.js          # Service worker — tracking, scoring, block/allow rules
 ├── popup/
@@ -181,6 +181,6 @@ cookiespy-extension/
 
 ## Background
 
-CookieSpy was built as a practical security tool to demonstrate real-world browser privacy concepts: cookie classification, third-party tracking detection, and network connection analysis. The same threat model underpins enterprise browser security controls in products like Microsoft Defender for Cloud Apps and network proxy solutions.
+WhatSite was built as a practical security tool to demonstrate real-world browser privacy concepts: cookie classification, third-party tracking detection, and network connection analysis. The same threat model underpins enterprise browser security controls in products like Microsoft Defender for Cloud Apps and network proxy solutions.
 
 Built by **Tom Clark** — Cyber Security & Platform Engineer · [cloudsecurity.global](https://cloudsecurity.global)

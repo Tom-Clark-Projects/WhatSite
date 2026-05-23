@@ -1,5 +1,5 @@
 /**
- * CookieSpy — Popup Script
+ * WhatSite — Popup Script
  *
  * Requests data from the background service worker for the active tab
  * and renders it. Listens for live 'dataChanged' messages to refresh.
@@ -447,7 +447,7 @@ function renderActiveView() {
     const hint = document.createElement('button');
     hint.className = 'urlhaus-hint';
     hint.type = 'button';
-    hint.title = 'Open CookieSpy settings';
+    hint.title = 'Open WhatSite settings';
     hint.innerHTML = `
       <span class="urlhaus-hint-icon">⚙</span>
       <span>URLhaus scoring is off — add a free Auth-Key in Settings for full threat detection</span>

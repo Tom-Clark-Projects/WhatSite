@@ -1,5 +1,5 @@
 /**
- * CookieSpy — Background Service Worker
+ * WhatSite — Background Service Worker
  *
  * Tracks per-tab:
  *   - First-party cookies (domain matches current page)
@@ -101,7 +101,7 @@ function paintIcon(tabId) {
     chrome.action.setBadgeText({ tabId, text: '' }).catch(() => {});
     chrome.action.setTitle({
       tabId,
-      title: 'CookieSpy - Cookie & Connection Tracker\nNo data yet for this tab',
+      title: 'WhatSite - Cookie & Connection Tracker\nNo data yet for this tab',
     }).catch(() => {});
     return;
   }
@@ -124,7 +124,7 @@ function paintIcon(tabId) {
   // Multi-line title shown on hover. Newlines work in Chrome/Edge tooltips.
   // Gives the user the full picture without having to open the popup.
   const tooltip = [
-    `CookieSpy - ${data.mainDomain}`,
+    `WhatSite - ${data.mainDomain}`,
     '-------------------------',
     `First-party cookies:   ${data.firstParty.size}`,
     `Third-party cookies:   ${data.thirdParty.size}`,
@@ -312,7 +312,7 @@ function applyGeo(domain, tabId, info) {
 
 // --- Threat Intelligence - URLhaus + DNS comparison -------------------------
 //
-// CookieSpy's threat scoring combines two independent signals:
+// WhatSite's threat scoring combines two independent signals:
 //
 //   1. URLhaus (abuse.ch) - a community-maintained malware-distribution
 //      database. As of 2024 abuse.ch requires a free Auth-Key for API
@@ -337,7 +337,7 @@ const threatCache = new Map();
 /**
  * The user's abuse.ch Auth-Key, mirrored from chrome.storage.local. Empty
  * string means "not configured" - URLhaus lookups are skipped in that case.
- * This is the one piece of state CookieSpy persists to disk, and it is
+ * This is the one piece of state WhatSite persists to disk, and it is
  * user-supplied configuration, never browsing data.
  */
 let urlhausAuthKey = '';
@@ -478,7 +478,7 @@ async function lookupThreat(domain, tabId) {
       const testInfo = {
         score:    100,
         level:    'high',
-        sources:  ['CookieSpy self-test'],
+        sources:  ['WhatSite self-test'],
         evidence: 'Built-in self-test entry — not a real threat',
       };
       threatCache.set(domain, testInfo);
@@ -595,7 +595,7 @@ function enforceBlockPolicy(domain, info) {
 
 // --- Block / Allow engine - declarativeNetRequest dynamic rules -------------
 //
-// CookieSpy uses Chrome's declarativeNetRequest API to actually stop traffic
+// WhatSite uses Chrome's declarativeNetRequest API to actually stop traffic
 // to high-risk domains, not just observe it. Two kinds of dynamic rules:
 //
 //   * BLOCK rules (priority 1):  match a request domain, refuse the request.
@@ -687,7 +687,7 @@ async function blockDomain(domain) {
     blockedDomains.set(domain, id);
     notifyAllTabsForDomain(domain);
   } catch (e) {
-    console.error('CookieSpy: failed to add block rule for', domain, e);
+    console.error('WhatSite: failed to add block rule for', domain, e);
   }
 }
 
@@ -700,7 +700,7 @@ async function unblockDomain(domain) {
       removeRuleIds: [id],
     });
   } catch (e) {
-    console.error('CookieSpy: failed to remove block rule for', domain, e);
+    console.error('WhatSite: failed to remove block rule for', domain, e);
   }
   blockedDomains.delete(domain);
   notifyAllTabsForDomain(domain);
@@ -743,7 +743,7 @@ async function allowDomain(mainDomain, blockedDomain, mode, durationMs, tabId) {
     }
     notifyAllTabsForDomain(blockedDomain);
   } catch (e) {
-    console.error('CookieSpy: failed to add allow rule for', mainRoot, blockedDomain, e);
+    console.error('WhatSite: failed to add allow rule for', mainRoot, blockedDomain, e);
   }
 }
 
@@ -758,7 +758,7 @@ async function revokeAllow(mainDomain, blockedDomain) {
       removeRuleIds: [allow.ruleId],
     });
   } catch (e) {
-    console.error('CookieSpy: failed to remove allow rule for', mainRoot, blockedDomain, e);
+    console.error('WhatSite: failed to remove allow rule for', mainRoot, blockedDomain, e);
   }
   activeAllows.delete(key);
   chrome.alarms.clear(ALARM_PREFIX + key);
@@ -814,7 +814,7 @@ async function reconstructState() {
       lookupThreat(domain, null);
     }
   } catch (e) {
-    console.error('CookieSpy: reconstructState failed', e);
+    console.error('WhatSite: reconstructState failed', e);
   }
 }
 

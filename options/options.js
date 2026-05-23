@@ -1,12 +1,12 @@
 /**
- * CookieSpy — Options Page Script
+ * WhatSite — Options Page Script
  *
  * Manages the abuse.ch URLhaus Auth-Key:
  *   - loads/saves it to chrome.storage.local
  *   - lets the user test it against the live URLhaus API (via the background
  *     service worker, which owns all network calls)
  *
- * The key is the only thing CookieSpy persists to disk. It is user-supplied
+ * The key is the only thing WhatSite persists to disk. It is user-supplied
  * configuration — never browsing data.
  */
 
