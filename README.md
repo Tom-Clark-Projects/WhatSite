@@ -31,6 +31,26 @@ The toolbar badge updates live as the page loads additional resources, colour-co
 
 ---
 
+## Screenshots
+
+**Popup — per-tab cookies, connections, threat scores and country codes**
+
+![WhatSite popup](docs/screenshots/popup.png)
+
+**External connections, scored and geolocated, while browsing a real site**
+
+![External connections](docs/screenshots/external-connections.png)
+
+**Hover Inspector — point at any page resource to see which domain served it**
+
+![Hover Inspector](docs/screenshots/hover-inspector.png)
+
+**Settings — add your own free abuse.ch URLhaus Auth-Key**
+
+![Settings](docs/screenshots/settings.png)
+
+---
+
 ## Threat-intelligence scoring
 
 Every unique external domain is scored 0–100 by combining two independent sources:

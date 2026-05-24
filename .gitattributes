@@ -2,5 +2,6 @@
 # contains only the extension's runtime files (manifest, scripts, icons).
 README.md       export-ignore
 store/          export-ignore
+docs/           export-ignore
 .gitattributes  export-ignore
 .gitignore      export-ignore
