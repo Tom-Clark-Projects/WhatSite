@@ -110,7 +110,7 @@ The toggle state is stored in `chrome.storage.local`; the content script is inje
   - Your abuse.ch Auth-Key, if you set one, is saved in `chrome.storage.local`. It is user-supplied configuration — a credential you chose to add — not data WhatSite collected about you.
 - **Per-tab isolation** — each tab has independent tracking state that never bleeds across tabs
 - **Limited external lookups** — for each *unique* external domain a tab contacts, WhatSite makes up to four enrichment calls, all over HTTPS:
-  - `ipwho.is` — IP geolocation (keyless)
+  - `api.ipquery.io` — IP geolocation, keyless (looks up the server IP, not the domain)
   - `urlhaus-api.abuse.ch` — malware reputation (only if you've configured an Auth-Key)
   - `security.cloudflare-dns.com` — DNS-over-HTTPS (malware-filtering resolver, keyless)
   - `dns.google` — DNS-over-HTTPS (plain resolver, used for comparison, keyless)
@@ -128,7 +128,7 @@ The toggle state is stored in `chrome.storage.local`; the content script is inje
 - `chrome.alarms` API — reliable expiry of timed allow rules even when the service worker is idle
 - `chrome.storage.local` API — persists the optional abuse.ch Auth-Key and the hover-inspector toggle
 - Content script — the hover inspector's on-page overlay, inert until toggled on
-- `ipwho.is` — free geolocation API (HTTPS, no key required)
+- `api.ipquery.io` — free IP-geolocation API (HTTPS, keyless, commercial use permitted)
 - `urlhaus-api.abuse.ch` — malware reputation API (HTTPS, requires a free Auth-Key — see *Threat-intelligence scoring*)
 - DNS-over-HTTPS to `security.cloudflare-dns.com` and `dns.google` — keyless threat-intel signal via resolver comparison
 - Vanilla JS, zero dependencies

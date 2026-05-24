@@ -98,20 +98,21 @@
     <h2>What data leaves your browser</h2>
     <p>
       To enrich each external domain with geolocation and threat information,
-      WhatSite sends <strong>the domain name alone</strong> (for example,
-      <code>cdn.example.com</code>) to the following third-party services over
-      HTTPS:
+      WhatSite sends a single piece of data — either <strong>the domain name
+      alone</strong> (for example, <code>cdn.example.com</code>) or the
+      <strong>server IP address</strong> the connection already went to — to
+      the following third-party services over HTTPS:
     </p>
     <table>
       <tr><th>Service</th><th>Purpose</th><th>Provider privacy policy</th></tr>
-      <tr><td><code>ipwho.is</code></td><td>IP address &amp; geolocation of the domain</td><td><a href="https://ipwho.is/">ipwho.is</a></td></tr>
+      <tr><td><code>api.ipquery.io</code></td><td>Geolocation of a server IP address (country, city, hosting provider)</td><td><a href="https://ipquery.io/">ipquery.io</a></td></tr>
       <tr><td><code>urlhaus-api.abuse.ch</code></td><td>Malware-reputation lookup (only if you configure an Auth-Key)</td><td><a href="https://abuse.ch/">abuse.ch</a></td></tr>
       <tr><td><code>security.cloudflare-dns.com</code></td><td>DNS-over-HTTPS, malware-filtering resolver</td><td><a href="https://www.cloudflare.com/privacypolicy/">Cloudflare</a></td></tr>
       <tr><td><code>dns.google</code></td><td>DNS-over-HTTPS, plain resolver (used for comparison)</td><td><a href="https://policies.google.com/privacy">Google</a></td></tr>
     </table>
     <p>Important limits on what is sent:</p>
     <ul>
-      <li>Only <strong>bare domain names</strong> are sent — never full URLs, never page content, never form data, never cookies, and never anything that identifies you.</li>
+      <li>Only a <strong>bare domain name</strong> or a <strong>server IP address</strong> is sent — never full URLs, never page content, never form data, never cookies, and never anything that identifies you.</li>
       <li>Requests are functional API lookups. The developer does not receive copies of them and operates no intermediary server.</li>
       <li>Each unique domain is queried at most once per browsing session and the result is cached in memory only.</li>
     </ul>

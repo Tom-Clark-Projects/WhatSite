@@ -179,7 +179,7 @@
    */
   function renderTooltip(el, data) {
     const tip = ensureTooltip();
-    const { hostname, type, party, threat } = data;
+    const { hostname, type, party, threat, geo } = data;
     tip.textContent = ''; // clear
 
     const domLine = document.createElement('div');
@@ -211,6 +211,12 @@
                  :                              '#22c55e';
     }
     tip.appendChild(infoRow('Score', scoreText, scoreColor));
+
+    // Country of the serving IP, when the background has geolocated it.
+    if (geo && geo.countryCode) {
+      const place = geo.flag ? `${geo.flag} ${geo.countryCode}` : geo.countryCode;
+      tip.appendChild(infoRow('Country', place, '#e2e8f0'));
+    }
 
     // Show, measure, then place above the element (flip below if no room).
     tip.style.setProperty('display', 'block', 'important');
@@ -290,7 +296,8 @@
           if (chrome.runtime.lastError) return;
           if (token !== reqToken || currentTarget !== el) return;
           const threat = res && res.threat ? res.threat : null;
-          renderTooltip(el, { hostname, type: info.type, party, threat });
+          const geo    = res && res.geo ? res.geo : null;
+          renderTooltip(el, { hostname, type: info.type, party, threat, geo });
           if (threat && threat.level === 'high') {
             el.style.setProperty('outline-color', '#ef4444', 'important');
           }

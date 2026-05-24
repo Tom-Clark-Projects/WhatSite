@@ -377,6 +377,20 @@ header {
   margin: 0 3px;
 }
 
+/* Two-letter ISO country code chip, shown first in the meta line */
+.row-meta .row-cc {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: #7dd3fc;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 3px;
+  padding: 1px 4px;
+}
+
 /* ─── Block / Allow state ──────────────────────────────────────────────────
    A blocked domain gets a red accent bar; an allowed one gets a green bar.
    The accent is an inset box-shadow so it doesn't disturb the grid layout.

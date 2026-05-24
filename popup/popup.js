@@ -235,6 +235,11 @@ function buildDomainRow(item) {
   meta.className = 'row-meta';
 
   const parts = [];
+  if (item.countryCode) {
+    parts.push(
+      `<span class="row-cc" title="${escapeHtml(item.location || item.countryCode)}">${escapeHtml(item.countryCode)}</span>`
+    );
+  }
   if (item.ip) {
     parts.push(`<span class="ip">${escapeHtml(item.ip)}</span>`);
   }

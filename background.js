@@ -22,7 +22,7 @@
  *   domains:    Map<string, DomainInfo>  - external domains seen
  * }
  * Cookie     { domain, name }
- * DomainInfo { count, ip, location, flag, org }
+ * DomainInfo { count, ip, location, countryCode, flag, org }
  */
 const tabData = new Map();
 
@@ -244,23 +244,36 @@ chrome.webRequest.onCompleted.addListener(
     // Skip requests to the same root domain
     if (reqRoot === mainRoot) return;
 
-    if (data.domains.has(reqHost)) {
-      data.domains.get(reqHost).count++;
+    let entry = data.domains.get(reqHost);
+    if (entry) {
+      entry.count++;
     } else {
-      data.domains.set(reqHost, {
+      entry = {
         count: 1,
         ip: null,
         location: null,
+        countryCode: null,
         flag: '\u{1F310}',
         org: null,
-        // threat starts undefined; the popup treats that as "checking..."
+        // threat starts null; the popup treats that as "checking..."
         // until lookupThreat() resolves and applyThreat() fills it in.
         threat: null,
-      });
-      // Fire both enrichment lookups in parallel. Each is best-effort,
-      // independently cached, and merges back into this entry when ready.
-      lookupGeo(reqHost, details.tabId);
+        // geoStarted guards the geo lookup so it only fires once per host.
+        geoStarted: false,
+      };
+      data.domains.set(reqHost, entry);
+      // Threat scoring works from the domain name and can start immediately.
       lookupThreat(reqHost, details.tabId);
+    }
+
+    // Geolocation runs off the real server IP the webRequest event reports —
+    // no domain name is ever sent to the geo provider. The IP can be absent
+    // on the first event (e.g. a cached response), so fire the lookup the
+    // first time an IP is available for this host.
+    if (!entry.geoStarted && details.ip) {
+      entry.geoStarted = true;
+      entry.ip = details.ip;
+      lookupGeo(reqHost, details.ip, details.tabId);
     }
 
     notifyPopup(details.tabId);
@@ -269,29 +282,36 @@ chrome.webRequest.onCompleted.addListener(
 );
 
 
-// --- IP Geolocation - ipwho.is (free, HTTPS, no API key) --------------------
+// --- IP Geolocation - ipquery.io (free, HTTPS, no API key, commercial-OK) ---
+//
+// We geolocate the actual server IP the webRequest event reported, so no
+// domain name is ever sent to the geo provider. ipquery.io's free tier is
+// keyless, unlimited, and explicitly permits commercial / published use.
 
-async function lookupGeo(domain, tabId) {
+async function lookupGeo(domain, ip, tabId) {
   try {
-    // Check cache first
+    // Check cache first (keyed by domain, shared across tabs)
     if (geoCache.has(domain)) {
       applyGeo(domain, tabId, geoCache.get(domain));
       return;
     }
+    if (!ip) return;
 
-    const res = await fetch(`https://ipwho.is/${domain}`, {
+    const res = await fetch(`https://api.ipquery.io/${encodeURIComponent(ip)}`, {
       signal: AbortSignal.timeout(4000),
     });
     if (!res.ok) return;
 
     const geo = await res.json();
-    if (!geo.success) return;
+    const loc = geo.location || {};
+    const cc  = String(loc.country_code || '').toUpperCase();
 
     const info = {
-      ip:       geo.ip       || '',
-      location: [geo.city, geo.country].filter(Boolean).join(', '),
-      flag:     countryFlag(geo.country_code),
-      org:      geo.connection?.org || geo.org || '',
+      ip:          geo.ip || ip,
+      location:    [loc.city, loc.country].filter(Boolean).join(', '),
+      countryCode: cc,
+      flag:        countryFlag(cc),
+      org:         geo.isp?.org || geo.isp?.isp || '',
     };
 
     geoCache.set(domain, info);
@@ -886,7 +906,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   // Served straight from the in-memory threat cache; null if we haven't
   // scored that domain yet (e.g. a first-party resource we never look up).
   if (message.type === 'getThreat') {
-    sendResponse({ threat: threatCache.get(message.domain) || null });
+    sendResponse({
+      threat: threatCache.get(message.domain) || null,
+      geo:    geoCache.get(message.domain)   || null,
+    });
     return true;
   }
 

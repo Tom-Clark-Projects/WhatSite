@@ -44,20 +44,22 @@ to the developer.
 ## What data leaves your browser
 
 To enrich each external domain with geolocation and threat information,
-WhatSite sends **the domain name alone** (for example, `cdn.example.com`) to
-the following third-party services over HTTPS:
+WhatSite sends a single piece of data — either **the domain name alone** (for
+example, `cdn.example.com`) or the **server IP address** the connection
+already went to — to the following third-party services over HTTPS:
 
 | Service | Purpose | Provider's privacy policy |
 |---------|---------|---------------------------|
-| `ipwho.is` | IP address & geolocation of the domain | https://ipwho.is/ |
+| `api.ipquery.io` | Geolocation of a server IP address (country, city, hosting provider) | https://ipquery.io/ |
 | `urlhaus-api.abuse.ch` | Malware-reputation lookup (only if you configure an Auth-Key) | https://abuse.ch/ |
 | `security.cloudflare-dns.com` | DNS-over-HTTPS, malware-filtering resolver | https://www.cloudflare.com/privacypolicy/ |
 | `dns.google` | DNS-over-HTTPS, plain resolver (used for comparison) | https://policies.google.com/privacy |
 
 Important limits on what is sent:
 
-- Only **bare domain names** are sent — never full URLs, never page content,
-  never form data, never cookies, and never anything that identifies you.
+- Only a **bare domain name** or a **server IP address** is sent — never full
+  URLs, never page content, never form data, never cookies, and never anything
+  that identifies you.
 - Requests are sent **as functional API lookups**. The developer does not
   receive copies of them and operates no intermediary server.
 - Each unique domain is queried **at most once per browsing session** and the
