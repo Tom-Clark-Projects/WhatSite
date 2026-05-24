@@ -77,8 +77,9 @@ WhatSite persists only two small, non-personal items, both in local browser
 storage on your device — never on a remote server:
 
 1. **Your optional abuse.ch Auth-Key**, if you enter one on the Settings page.
-   This is configuration you supplied; you can clear it at any time from
-   Settings.
+   It is held in the browser's native extension storage, scoped to this browser
+   profile — it does not sync to other browsers, profiles, or devices. This is
+   configuration you supplied; you can clear it at any time from Settings.
 2. **The Hover Inspector on/off preference.**
 
 In addition, when WhatSite auto-blocks a high-risk domain or you grant a

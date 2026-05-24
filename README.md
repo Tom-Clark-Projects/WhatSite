@@ -107,7 +107,7 @@ The toggle state is stored in `chrome.storage.local`; the content script is inje
 - **No browsing data on disk** — all tracking data (cookies, connections, scores) is held in memory and cleared when you navigate away or close the tab; no browsing history is ever written to `localStorage` or `chrome.storage`
 - **Two persisted exceptions, neither is browsing history:**
   - Auto-block and timed-allow rules persist via Chrome's own `declarativeNetRequest` and `chrome.alarms` stores so they survive a service-worker restart. They hold only domain names and expiry timestamps, and Chrome clears them when the rules are removed.
-  - Your abuse.ch Auth-Key, if you set one, is saved in `chrome.storage.local`. It is user-supplied configuration — a credential you chose to add — not data WhatSite collected about you.
+  - Your abuse.ch Auth-Key, if you set one, is saved in `chrome.storage.local` — the browser's own native extension storage, scoped to the current browser profile. It does not sync, and never leaves that profile on that machine. It is user-supplied configuration — a credential you chose to add — not data WhatSite collected about you.
 - **Per-tab isolation** — each tab has independent tracking state that never bleeds across tabs
 - **Limited external lookups** — for each *unique* external domain a tab contacts, WhatSite makes up to four enrichment calls, all over HTTPS:
   - `api.ipquery.io` — IP geolocation, keyless (looks up the server IP, not the domain)
