@@ -213,9 +213,10 @@
     tip.appendChild(infoRow('Score', scoreText, scoreColor));
 
     // Country of the serving IP, when the background has geolocated it.
+    // ISO code only: Windows renders a flag emoji as those same two letters,
+    // so "flag + code" would read as "US US".
     if (geo && geo.countryCode) {
-      const place = geo.flag ? `${geo.flag} ${geo.countryCode}` : geo.countryCode;
-      tip.appendChild(infoRow('Country', place, '#e2e8f0'));
+      tip.appendChild(infoRow('Country', geo.countryCode, '#e2e8f0'));
     }
 
     // Show, measure, then place above the element (flip below if no room).
